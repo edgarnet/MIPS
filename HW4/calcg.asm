@@ -16,13 +16,14 @@ msgFour: 	.asciiz "\nThe result is: "
 		.globl main
 
 main:
+		
 		#Collect first number
 		li $v0, 4
 		la $a0, msgOne 		#Prompt
 		syscall
 		li $v0, 5 		#Read
 		syscall 
-		sw $v0, randOne 	#Store
+		sw $v0, randOne
 
 		#Collect second number
 		li $v0, 4 		#4: v0 code for print_string
@@ -31,7 +32,7 @@ main:
 		li $v0, 5 		#5: v0 code for read_int
 		syscall
 		sw $v0, randTwo
-
+		
 		#Collect operation
 		li $v0, 4
 		la $a0, msgThree
@@ -40,45 +41,45 @@ main:
 		syscall
 		sw $v0, operation
 
-		#temp registers
-		lw $t0, randOne
-		lw $t1, randTwo
-		lw $t2, operation
-
-
 setup: 		
-		#Store input into argument registers 
-		move $a0, $t0
-		move $a1, $t1
+		lw $a0, operation 	#Store input into argument register 
+		
 		#Conditions for each operation
-		beq $t2, 1, addOp
-		beq $t2, 2, subOp
-		beq $t2, 3, multiOp
+		beq $a0, 1, addOp
+		beq $a0, 2, subOp
+		beq $a0, 3, multiOp
 
-addOp:
+addOp:	
+		#Load registers and compute
+		lw $a0, randOne
+		lw $a1, randTwo
 		add $a0, $a0, $a1
 		j Exit 			#Spent hours on this!
 
 subOp:
+		lw $a0, randOne
+		lw $a1, randTwo
 		sub $a0, $a0, $a1
 		j Exit
 
 multiOp:
+		lw $a0, randOne
+		lw $a1, randTwo
 		mult $a0, $a1
 		mflo $a0
 		j Exit
 
 Exit:
-		move $v1, $a0 		#Store result in $v1 to use $a0
+		sw $a0, operation	#Store result in operation
 		li $v0, 4
 		la $a0, msgFour
 		syscall
 
 		#Print result
 		li $v0, 1 		#1: v0 code to print_int
-		move $a0, $v1
+		lw $a0, operation
 		syscall
 
 		#Exit command	
 		li $v0, 10
-    		syscall	
+    		syscall
