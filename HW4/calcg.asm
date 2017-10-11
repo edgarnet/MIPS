@@ -9,7 +9,7 @@ operation: 	.word 0
 
 msgOne: 	.asciiz "\nEnter the first number: "
 msgTwo: 	.asciiz "\nEnter the second number: "
-msgThree:	.asciiz "\nEnter an operation (1 :: +, 2 :: -, 3 :: *): "
+msgThree:	.asciiz "\nEnter an operation (0 :: +, 1 :: -, 2 :: *): "
 msgFour: 	.asciiz "\nThe result is: "
 
 		.text
@@ -45,9 +45,9 @@ setup:
 		lw $a0, operation 	#Store input into argument register 
 		
 		#Conditions for each operation
-		beq $a0, 1, addOp
-		beq $a0, 2, subOp
-		beq $a0, 3, multiOp
+		beq $a0, 0, addOp
+		beq $a0, 1, subOp
+		beq $a0, 2, multiOp
 
 addOp:	
 		#Load registers and compute
