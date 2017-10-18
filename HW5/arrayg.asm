@@ -21,7 +21,7 @@ setup:
 		la $s0, my_ints
 		addi $s1, $s0, 40 	# Final address is 4 bytes * 10 elements
 		lw $t0, 0($s0) 		# Collect first element in my_ints
-		sw $t0, my_max 		# Store my_ints[0] in main
+		sw $t0, my_max 		# Store my_ints[0] in my_max
 		
 sum:
 		beq $s0, $s1, Exit 	# my_ints[i] == end ? Exit
@@ -30,9 +30,9 @@ sum:
 		add $s2, $s2, $t0 	# $s2 += my_ints[i]
 
 max:
-		lw $a1, my_max 
-		slt $t1, $t0, $a1	# max < my_ints[i] ? 
-		bne $t1, $zero, sum     # ! then loop back to sum 
+		lw $a0, my_max 
+		slt $t1, $t0, $a0	# my_ints[i] < max ? 
+		bne $t1, $zero, sum     # then loop back to sum 
 
 		sw $t0, my_max 		# else max = my_ints[i] 
 		j sum
